@@ -6,22 +6,40 @@ on:
 jobs:
   pull:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
-      - name: Pull images
+      - name: Pull & Save Portainer
+        continue-on-error: true
         run: |
-          docker pull portainer/portainer-ce:2.21.5
-          docker pull filebrowser/filebrowser:v2.30
-          docker pull xhofe/alist:latest
-          docker pull linuxserver/qbittorrent:14.3.9
-          docker pull jellyfin/jellyfin:10.9.11
+          for i in 1 2 3; do docker pull portainer/portainer-ce:2.21.5 && break || sleep 5; done
+          docker save -o portainer.tar portainer/portainer-ce:2.21.5 || true
 
-      - name: Save images
+      - name: Pull & Save FileBrowser
+        continue-on-error: true
         run: |
-          docker save -o portainer.tar portainer/portainer-ce:2.21.5
-          docker save -o filebrowser.tar filebrowser/filebrowser:v2.30
-          docker save -o alist.tar xhofe/alist:latest
-          docker save -o qbittorrent.tar linuxserver/qbittorrent:14.3.9
-          docker save -o jellyfin.tar jellyfin/jellyfin:10.9.11
+          for i in 1 2 3; do docker pull filebrowser/filebrowser:latest && break || sleep 5; done
+          docker save -o filebrowser.tar filebrowser/filebrowser:latest || true
+
+      - name: Pull & Save Alist
+        continue-on-error: true
+        run: |
+          for i in 1 2 3; do docker pull xhofe/alist:latest && break || sleep 5; done
+          docker save -o alist.tar xhofe/alist:latest || true
+
+      - name: Pull & Save Qbittorrent
+        continue-on-error: true
+        run: |
+          for i in 1 2 3; do docker pull linuxserver/qbittorrent:14.3.9 && break || sleep 5; done
+          docker save -o qbittorrent.tar linuxserver/qbittorrent:14.3.9 || true
+
+      - name: Pull & Save Jellyfin
+        continue-on-error: true
+        run: |
+          for i in 1 2 3; do docker pull jellyfin/jellyfin:10.9.11 && break || sleep 5; done
+          docker save -o jellyfin.tar jellyfin/jellyfin:10.9.11 || true
+
+      - name: List images
+        run: ls -lh *.tar || true
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
