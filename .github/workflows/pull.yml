@@ -10,7 +10,7 @@ jobs:
       - name: Pull images
         run: |
           docker pull portainer/portainer-ce:2.21.5
-          docker pull filebrowser/filebrowser:2.30
+          docker pull filebrowser/filebrowser:v2.30
           docker pull xhofe/alist:latest
           docker pull linuxserver/qbittorrent:14.3.9
           docker pull jellyfin/jellyfin:10.9.11
@@ -18,7 +18,7 @@ jobs:
       - name: Save images
         run: |
           docker save -o portainer.tar portainer/portainer-ce:2.21.5
-          docker save -o filebrowser.tar filebrowser/filebrowser:2.30
+          docker save -o filebrowser.tar filebrowser/filebrowser:v2.30
           docker save -o alist.tar xhofe/alist:latest
           docker save -o qbittorrent.tar linuxserver/qbittorrent:14.3.9
           docker save -o jellyfin.tar jellyfin/jellyfin:10.9.11
